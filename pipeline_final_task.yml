@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
+        choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Deployment environment')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests before deployment?')
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                echo 'Initializing pipeline for Make Your Wishes Come True project...'
+                sh 'mkdir -p build/reports'
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                echo "Checking out code from branch: ${params.BRANCH}"
+                git branch: params.BRANCH, url: 'https://your-repo-url.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing project dependencies...'
+                sh 'npm install' // Replace with relevant command for your project
+            }
+        }
+
+        stage('Run Tests') {
+            when {
+                expression { params.RUN_TESTS }
+            }
+            steps {
+                echo 'Running tests...'
+                sh 'npm test' // Adjust for the test suite you are using
+                junit '**/test-results/*.xml' // Collect test results
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                sh 'npm run build' // Replace with the build command for your project
+                archiveArtifacts artifacts: '**/build/**', fingerprint: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying to environment: ${params.ENV}"
+                sh "./deploy.sh ${params.ENV}" // Adjust for your deployment process
+            }
+        }
+
+        stage('Post-Deployment Checks') {
+            steps {
+                echo 'Running post-deployment checks...'
+                sh './post-deploy-checks.sh' // Replace with your custom checks
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed! Investigating issues...'
+        }
+    }
+}
