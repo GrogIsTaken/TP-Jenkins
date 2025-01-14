@@ -18,7 +18,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo "Checking out code from branch: ${params.BRANCH}"
-                git branch: params.BRANCH, url: 'https://your-repo-url.git'
+                git branch: params.BRANCH, url: 'https://github.com/GrogIsTaken/TP-Jenkins/tree/main'
             }
         }
 
