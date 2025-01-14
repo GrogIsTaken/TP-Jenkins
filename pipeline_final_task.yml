@@ -11,21 +11,21 @@ pipeline {
         stage('Initialize') {
             steps {
                 echo 'Initializing pipeline for Make Your Wishes Come True project...'
-                sh 'mkdir -p build/reports'
+                bat 'mkdir build\\reports' // Updated for Windows compatibility
             }
         }
 
         stage('Checkout Code') {
             steps {
                 echo "Checking out code from branch: ${params.BRANCH}"
-                git branch: params.BRANCH, url: 'https://github.com/GrogIsTaken/TP-Jenkins/tree/main'
+                git branch: params.BRANCH, url: 'https://github.com/GrogIsTaken/TP-Jenkins.git' // Updated URL to repository root
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies...'
-                sh 'npm install' // Replace with relevant command for your project
+                bat 'npm install' // Updated for Windows compatibility
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 echo 'Running tests...'
-                sh 'npm test' // Adjust for the test suite you are using
+                bat 'npm test' // Updated for Windows compatibility
                 junit '**/test-results/*.xml' // Collect test results
             }
         }
@@ -43,7 +43,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                sh 'npm run build' // Replace with the build command for your project
+                bat 'npm run build' // Updated for Windows compatibility
                 archiveArtifacts artifacts: '**/build/**', fingerprint: true
             }
         }
@@ -51,14 +51,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Deploying to environment: ${params.ENV}"
-                sh "./deploy.sh ${params.ENV}" // Adjust for your deployment process
+                bat "deploy.bat ${params.ENV}" // Updated for Windows compatibility
             }
         }
 
         stage('Post-Deployment Checks') {
             steps {
                 echo 'Running post-deployment checks...'
-                sh './post-deploy-checks.sh' // Replace with your custom checks
+                bat 'post-deploy-checks.bat' // Updated for Windows compatibility
             }
         }
     }
