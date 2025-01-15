@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo "=== CHECKOUT STAGE ==="
                 echo "Selected Epic/Month: ${params.SELECTED_EPIC}"
-                // Example of checking out from Git:
+                // If needed, checkout from Git:
                 // git branch: 'main', url: 'https://github.com/YourOrg/YourProject.git'
             }
         }
@@ -28,9 +28,9 @@ pipeline {
             steps {
                 echo "=== PRODUCT BACKLOG / IDEATION STAGE ==="
                 sh """
-                   echo 'Gathering stories for ${params.SELECTED_EPIC}...'
-                   echo 'High-level prioritization...'
-                   echo 'Defining acceptance criteria...'
+                  echo "Gathering stories for ${params.SELECTED_EPIC}..."
+                  echo "High-level prioritization..."
+                  echo "Defining acceptance criteria..."
                 """
             }
         }
@@ -39,9 +39,9 @@ pipeline {
             steps {
                 echo "=== REFINEMENT & SPRINT PLANNING STAGE ==="
                 sh """
-                   echo 'Breaking down user stories into tasks for ${params.SELECTED_EPIC}...'
-                   echo 'Estimating effort...'
-                   echo 'Prioritizing the sprint backlog...'
+                  echo "Breaking down user stories into tasks for ${params.SELECTED_EPIC}..."
+                  echo "Estimating effort..."
+                  echo "Prioritizing the sprint backlog..."
                 """
             }
         }
@@ -50,8 +50,8 @@ pipeline {
             steps {
                 echo "=== IMPLEMENTATION & DEVELOPMENT STAGE ==="
                 sh """
-                   echo 'Implementing features for ${params.SELECTED_EPIC}...'
-                   echo 'Using feature branches, pull requests, daily standups...'
+                  echo "Implementing features for ${params.SELECTED_EPIC}..."
+                  echo "Using feature branches, pull requests, daily standups..."
                 """
             }
         }
@@ -60,11 +60,10 @@ pipeline {
             steps {
                 echo "=== TESTING & QA STAGE ==="
                 sh """
-                   echo 'Running unit and integration tests for ${params.SELECTED_EPIC}...'
-                   echo 'Performing code quality checks...'
+                  echo "Running unit and integration tests for ${params.SELECTED_EPIC}..."
+                  echo "Performing code quality checks..."
                 """
-                // Example placeholder for running tests:
-                // sh './run-tests.sh'
+                // Example: sh './run-tests.sh'
             }
         }
 
@@ -72,8 +71,8 @@ pipeline {
             steps {
                 echo "=== REVIEW & DEMO STAGE ==="
                 sh """
-                   echo 'Demonstrating completed features for ${params.SELECTED_EPIC}...'
-                   echo 'Collecting stakeholder feedback...'
+                  echo "Demonstrating completed features for ${params.SELECTED_EPIC}..."
+                  echo "Collecting stakeholder feedback..."
                 """
             }
         }
@@ -82,11 +81,10 @@ pipeline {
             steps {
                 echo "=== RELEASE & DEPLOYMENT STAGE ==="
                 sh """
-                   echo 'Preparing release artifacts for ${params.SELECTED_EPIC}...'
-                   echo 'Deploying to production (or staging) environment...'
+                  echo "Preparing release artifacts for ${params.SELECTED_EPIC}..."
+                  echo "Deploying to production (or staging) environment..."
                 """
-                // Example placeholder for deployment steps:
-                // sh './deploy.sh --env=production'
+                // Example: sh './deploy.sh --env=production'
             }
         }
 
@@ -94,9 +92,9 @@ pipeline {
             steps {
                 echo "=== RETROSPECTIVE & CONTINUOUS IMPROVEMENT STAGE ==="
                 sh """
-                   echo 'Conducting retrospective for ${params.SELECTED_EPIC}...'
-                   echo 'Analyzing lessons learned...'
-                   echo 'Planning improvements for next iteration...'
+                  echo "Conducting retrospective for ${params.SELECTED_EPIC}..."
+                  echo "Analyzing lessons learned..."
+                  echo "Planning improvements for next iteration..."
                 """
             }
         }
