@@ -2,76 +2,109 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
-        choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Deployment environment')
-        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests before deployment?')
+        choice(
+            name: 'SELECTED_EPIC', 
+            choices: [
+                'JANUARY - Write a Diary', 
+                'FEBRUARY - Redecorate House', 
+                'MARCH - Take Care of Yourself'
+            ],
+            description: 'Select which Epic/Month you would like to build and deploy'
+        )
     }
 
     stages {
-        stage('Initialize') {
+
+        stage('Checkout') {
             steps {
-                echo 'Initializing pipeline for Make Your Wishes Come True project...'
-                bat 'mkdir build\\reports' // Updated for Windows compatibility
+                echo "=== CHECKOUT STAGE ==="
+                echo "Selected Epic/Month: ${params.SELECTED_EPIC}"
+                // Example of checking out from Git:
+                // git branch: 'main', url: 'https://github.com/YourOrg/YourProject.git'
             }
         }
 
-        stage('Checkout Code') {
+        stage('Product Backlog / Ideation') {
             steps {
-                echo "Checking out code from branch: ${params.BRANCH}"
-                git branch: params.BRANCH, url: 'https://github.com/GrogIsTaken/TP-Jenkins.git' // Updated URL to repository root
+                echo "=== PRODUCT BACKLOG / IDEATION STAGE ==="
+                sh """
+                   echo 'Gathering stories for ${params.SELECTED_EPIC}...'
+                   echo 'High-level prioritization...'
+                   echo 'Defining acceptance criteria...'
+                """
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Refinement & Sprint Planning') {
             steps {
-                echo 'Installing project dependencies...'
-                bat 'npm install' // Updated for Windows compatibility
+                echo "=== REFINEMENT & SPRINT PLANNING STAGE ==="
+                sh """
+                   echo 'Breaking down user stories into tasks for ${params.SELECTED_EPIC}...'
+                   echo 'Estimating effort...'
+                   echo 'Prioritizing the sprint backlog...'
+                """
             }
         }
 
-        stage('Run Tests') {
-            when {
-                expression { params.RUN_TESTS }
-            }
+        stage('Implementation & Development') {
             steps {
-                echo 'Running tests...'
-                bat 'npm test' // Updated for Windows compatibility
-                junit '**/test-results/*.xml' // Collect test results
-            }
-        }
-
-        stage('Build') {
-            steps {
-                echo 'Building the application...'
-                bat 'npm run build' // Updated for Windows compatibility
-                archiveArtifacts artifacts: '**/build/**', fingerprint: true
+                echo "=== IMPLEMENTATION & DEVELOPMENT STAGE ==="
+                sh """
+                   echo 'Implementing features for ${params.SELECTED_EPIC}...'
+                   echo 'Using feature branches, pull requests, daily standups...'
+                """
             }
         }
 
-        stage('Deploy') {
+        stage('Testing & Quality Assurance') {
             steps {
-                echo "Deploying to environment: ${params.ENV}"
-                bat "deploy.bat ${params.ENV}" // Updated for Windows compatibility
+                echo "=== TESTING & QA STAGE ==="
+                sh """
+                   echo 'Running unit and integration tests for ${params.SELECTED_EPIC}...'
+                   echo 'Performing code quality checks...'
+                """
+                // Example placeholder for running tests:
+                // sh './run-tests.sh'
             }
         }
 
-        stage('Post-Deployment Checks') {
+        stage('Review & Demo') {
             steps {
-                echo 'Running post-deployment checks...'
-                bat 'post-deploy-checks.bat' // Updated for Windows compatibility
+                echo "=== REVIEW & DEMO STAGE ==="
+                sh """
+                   echo 'Demonstrating completed features for ${params.SELECTED_EPIC}...'
+                   echo 'Collecting stakeholder feedback...'
+                """
+            }
+        }
+
+        stage('Release & Deployment') {
+            steps {
+                echo "=== RELEASE & DEPLOYMENT STAGE ==="
+                sh """
+                   echo 'Preparing release artifacts for ${params.SELECTED_EPIC}...'
+                   echo 'Deploying to production (or staging) environment...'
+                """
+                // Example placeholder for deployment steps:
+                // sh './deploy.sh --env=production'
+            }
+        }
+
+        stage('Retrospective & Continuous Improvement') {
+            steps {
+                echo "=== RETROSPECTIVE & CONTINUOUS IMPROVEMENT STAGE ==="
+                sh """
+                   echo 'Conducting retrospective for ${params.SELECTED_EPIC}...'
+                   echo 'Analyzing lessons learned...'
+                   echo 'Planning improvements for next iteration...'
+                """
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline execution completed.'
-        }
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed! Investigating issues...'
+            echo "Pipeline completed for EPIC: ${params.SELECTED_EPIC}."
         }
     }
 }
